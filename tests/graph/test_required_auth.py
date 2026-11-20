@@ -88,6 +88,11 @@ class AuthProviderTests(unittest.TestCase):
                                               side_effect=AssertionError("Unexpected network call")))
 
     def test_sharepoint_factory_and_next_request_use_real_provider_refresh(self):
+        token_path = Path(self.config["token_path"])
+        # Exercise an alternate spelling even when the platform returns a normalized temp path.
+        subdirectory = token_path.parent / "nested"
+        subdirectory.mkdir()
+        self.config["token_path"] = str(subdirectory / ".." / token_path.name)
         self.graph.side_effect = [
             response({"id": "fixture-site", "webUrl": "https://fixture.invalid/sites/Test"}),
             response({"id": "fixture-drive", "name": "Documents"}),
@@ -103,7 +108,7 @@ class AuthProviderTests(unittest.TestCase):
         self.assertEqual(headers, ["Bearer initial-fixture-token", "Bearer initial-fixture-token",
                                    "Bearer renewed-fixture-token"])
         self.assertEqual(self.app.acquire_token_silent.call_count, 2)
-        self.cache.assert_called_once_with(self.config["token_path"], allow_plaintext=False)
+        self.cache.assert_called_once_with(str(token_path.resolve()), allow_plaintext=False)
 
     def test_mailbox_factory_authenticates_with_real_provider(self):
         self.graph.side_effect = [response({"value": []}), response({"id": "fixture-user"})]
