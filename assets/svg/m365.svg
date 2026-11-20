@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: MIT | Copyright (c) 2026 m365 contributors -->
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="160"
+     viewBox="0 0 520 160" role="img" aria-labelledby="title desc">
+  <title id="title">m365</title>
+  <desc id="desc">An open M-shaped connection mark and a rounded m365 wordmark.
+    An independent toolkit connecting cloud and desktop workflows.</desc>
+  <defs>
+    <linearGradient id="connection" x1="28" y1="112" x2="132" y2="32"
+                    gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#06b6d4"/>
+      <stop offset="0.5" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <g id="symbol" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M28 112V48Q28 32 44 32Q52 32 59 40L80 66L101 40Q108 32 116 32Q132 32 132 48V112"
+          stroke="url(#connection)" stroke-width="22"/>
+    <path d="M52 108H108" stroke="#2563eb" stroke-width="6"/>
+    <circle cx="80" cy="108" r="8" fill="#2563eb" stroke="none"/>
+  </g>
+  <!-- All lettering is vector geometry: no fonts or external assets required. -->
+  <g id="wordmark" fill="none" stroke="#17233b" stroke-width="11"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path id="letter-m" d="M187 116V81C187 58 222 58 222 81V116M222 81C222 58 257 58 257 81V116"/>
+    <path id="digit-3" d="M290 67C318 52 342 64 334 80C330 87 318 89 309 89M309 89C345 88 348 113 327 120C315 124 300 121 290 114"/>
+    <path id="digit-6" d="M393 64C363 59 354 81 354 101C354 126 394 132 402 106C410 80 370 76 355 97"/>
+    <path id="digit-5" d="M470 64H431L427 89C440 82 456 85 465 93C485 113 452 136 427 115"/>
+  </g>
+</svg>

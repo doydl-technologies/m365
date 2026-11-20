@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows / Python 3.13 / ${{ matrix.install }}
+    runs-on: windows-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        install: [base, dates]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: Build release artifacts
+        run: |
+          python -m pip install build
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python -m build --outdir dist
+      - name: Install and test the built wheel
+        env:
+          INSTALL: ${{ matrix.install }}
+        shell: pwsh
+        run: |
+          $envDir = Join-Path $env:RUNNER_TEMP 'm365-env'
+          python -m venv $envDir
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $python = Join-Path $envDir 'Scripts/python.exe'
+          $wheel = Get-ChildItem dist -Filter '*.whl' -File
+          if (@($wheel).Count -ne 1) { throw 'Expected exactly one built wheel' }
+          $uri = [Uri]::new($wheel.FullName).AbsoluteUri
+          $name = if ($env:INSTALL -eq 'dates') { 'm365[dates]' } else { 'm365' }
+          & $python -m pip install "$name @ $uri"
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          & $python -m pip check
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          & $python -B tools/test_suite.py graph --installed --output .local/test-results/graph --dist dist
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          & $python -B tools/test_suite.py combined --installed --output .local/test-results/combined --dist dist

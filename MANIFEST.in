@@ -1,0 +1,17 @@
+include STORAGE.md LICENSE
+recursive-include assets *.svg *.png *.txt *LICENSE*
+recursive-include tests *.py
+recursive-include tools *.py
+recursive-include src/m365/graph/_syslib/ref_data *.txt
+prune comoutlook
+prune m365/outlook_com
+prune src/m365/outlook_com
+prune tests/com
+prune msftgraph
+prune src/comoutlook
+prune src/msftgraph
+prune src/m365/graph/.deprecated
+prune .local
+prune release
+global-exclude *.pyc
+global-exclude README*

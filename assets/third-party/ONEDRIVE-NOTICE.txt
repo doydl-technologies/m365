@@ -1,0 +1,15 @@
+Microsoft OneDrive - Third-Party Trademark Notice
+
+Microsoft OneDrive is a Microsoft product. The OneDrive name and logo
+represented by microsoft-onedrive.svg are trademarks of Microsoft Corporation.
+All rights in those marks remain with Microsoft Corporation.
+
+The msftgraph module does not claim ownership of Microsoft OneDrive or its
+name or logo. References to OneDrive and use of its logo identify the
+third-party product for integration or compatibility purposes, not as an
+advertisement or a claim of affiliation, sponsorship, or endorsement.
+
+msftgraph is not an official Microsoft product. Inclusion of this asset does
+not imply that Microsoft sponsors, endorses, or is affiliated with msftgraph.
+This notice does not grant permission to use or redistribute Microsoft's
+trademarks or logo; any applicable permissions and usage guidelines still apply.

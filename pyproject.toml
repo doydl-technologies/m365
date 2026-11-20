@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "m365"
+dynamic = ["version", "description", "requires-python", "dependencies", "optional-dependencies"]
+license = "MIT"
+license-files = [
+  "LICENSE",
+  "assets/third-party/*NOTICE.txt",
+  "assets/svg/LOGO-LICENSE",
+  "assets/png/LOGO-LICENSE",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Topic :: Office/Business",
+]
+authors = [
+  { name = "DOYDL Technologies" },
+]
+
+[project.urls]
+Homepage = "https://github.com/doydl-technologies/m365"
+Documentation = "https://github.com/doydl-technologies/m365#readme"
+Issues = "https://github.com/doydl-technologies/m365/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "m365.__version__"}
