@@ -4,6 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "m365"
+readme = "README.md"
 dynamic = ["version", "description", "requires-python", "dependencies", "optional-dependencies"]
 license = "MIT"
 license-files = [

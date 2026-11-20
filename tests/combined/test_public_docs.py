@@ -53,9 +53,6 @@ class PublicDocumentationTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         for name in ("README.md", "STORAGE.md"):
             path = root / name
-            # Source distributions intentionally omit README files.
-            if path.name == "README.md" and not path.exists():
-                continue
             yield name, path.read_text(encoding="utf-8")
 
     def test_repository_uses_one_project_readme_and_one_storage_guide(self):
@@ -64,9 +61,8 @@ class PublicDocumentationTests(unittest.TestCase):
             with self.subTest(retired=retired):
                 self.assertFalse((root / retired).exists())
         self.assertTrue((root / "STORAGE.md").is_file())
-        readme = root / "README.md"
-        if readme.exists():
-            self.assertIn("](STORAGE.md)", readme.read_text(encoding="utf-8"))
+        readme = (root / "README.md").read_text(encoding="utf-8")
+        self.assertIn("](https://github.com/doydl-technologies/m365/blob/main/STORAGE.md)", readme)
         for name, text in self.documents():
             with self.subTest(document=name):
                 self.assertNotRegex(text, r"(?i)\b(?:GRAPH|ONEDRIVE)\.md\b")

@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/png/m365-endorsed-lockup-horizontal-python-light-957x323-384dpi.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/png/m365-endorsed-lockup-horizontal-python-dark-957x323-384dpi.png">
-    <img src="assets/png/m365-endorsed-lockup-horizontal-python-dark-957x323-384dpi.png" alt="m365 — powered by DOYDL Technologies" width="700">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/doydl-technologies/m365/main/assets/png/m365-endorsed-lockup-horizontal-python-light-957x323-384dpi.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/doydl-technologies/m365/main/assets/png/m365-endorsed-lockup-horizontal-python-dark-957x323-384dpi.png">
+    <img src="https://raw.githubusercontent.com/doydl-technologies/m365/main/assets/png/m365-endorsed-lockup-horizontal-python-dark-957x323-384dpi.png" alt="m365 — powered by DOYDL Technologies" width="700">
   </picture>
 </p>
 
@@ -15,50 +15,46 @@
 <p align="center">
   <a href="https://pypi.org/project/m365/"><img src="https://img.shields.io/pypi/v/m365" alt="PyPI version"></a>
   <a href="https://pypi.org/project/m365/"><img src="https://img.shields.io/pypi/pyversions/m365" alt="Supported Python versions"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/doydl-technologies/m365" alt="License"></a>
+  <a href="https://github.com/doydl-technologies/m365/blob/main/LICENSE"><img src="https://img.shields.io/github/license/doydl-technologies/m365" alt="License"></a>
   <a href="https://doydl.studio"><img src="https://img.shields.io/badge/Powered%20by-DOYDL%20Technologies-blue" alt="Powered by DOYDL Technologies"></a>
 </p>
 
-The project is classified as Alpha; APIs may change.
-Python 3.10+ is declared in the package metadata. This candidate's clean-install
-and live storage checks were run on Windows with Python 3.13.
+The project is classified as Alpha; APIs may change. It requires Python 3.10 or later.
 
 > [!IMPORTANT]
 > This is an independent toolkit, not an official Microsoft product. A configured Microsoft Entra application, appropriate resource permissions, and a valid Microsoft Graph authentication provider are prerequisites. Installing the package does not grant access to Microsoft 365.
 
-<a id="contents"></a>
+## Contents
 
-## 🧭 Contents
-
-- [🔍 What m365 does](#overview)
-- [🏗️ Architecture and package layout](#architecture)
-- [📦 Requirements and installation](#installation)
-- [🔐 Authentication and authorization](#authentication)
+- [🔍 What m365 does](#what-m365-does)
+- [🏗️ Architecture and package layout](#architecture-and-package-layout)
+- [📦 Requirements and installation](#requirements-and-installation)
+- [🔐 Authentication and authorization](#authentication-and-authorization)
 - [🚀 Quick start](#quick-start)
-- [📁 SharePoint client reference](#sharepoint)
-  - [Site and library selection](#site-selection)
-  - [Paths and searching](#sharepoint-search)
+- [📁 SharePoint client reference](#sharepoint-client-reference)
+  - [Site and library selection](#site-and-library-selection)
+  - [Paths and searching](#paths-and-searching)
   - [Uploads](#uploads)
   - [Downloads](#downloads)
-  - [Moving documents](#moves)
-- [📬 Outlook mailbox reference](#outlook)
-  - [Reading messages and folders](#mail-reads)
-  - [Drafts and message operations](#mail-operations)
+  - [Moving documents](#moving-documents)
+- [📬 Outlook mailbox reference](#outlook-mailbox-reference)
+  - [Reading messages and folders](#reading-messages-and-folders)
+  - [Drafts and message operations](#drafts-and-message-operations)
   - [Attachments](#attachments)
-  - [Incremental synchronization](#delta)
-- [☁️ OneDrive integration](#onedrive)
+  - [Incremental synchronization](#incremental-synchronization)
+- [☁️ OneDrive integration](#onedrive-integration)
 - [Shared storage operations](#shared-storage-api)
-- [🌐 Shared Graph transport](#transport)
-- [🛡️ Reliability, security, and operational limits](#reliability)
-- [🩺 Errors and troubleshooting](#troubleshooting)
-- [💼 Business integration scenarios](#business-scenarios)
-- [🧪 Development and validation](#development)
-- [📋 Release and packaging notes](#release)
-- [📚 Project links and licensing](#project-links)
+- [🌐 Shared Graph transport](#shared-graph-transport)
+- [🛡️ Reliability, security, and operational limits](#reliability-security-and-operational-limits)
+- [🩺 Errors and troubleshooting](#errors-and-troubleshooting)
+- [💼 Business integration scenarios](#business-integration-scenarios)
+- [🧪 Development and validation](#development-and-validation)
+- [📋 Release and packaging notes](#release-and-packaging-notes)
+- [📚 Project links and licensing](#project-links-and-licensing)
 
 <a id="overview"></a>
 
-## 🔍 What m365 does
+## What m365 does
 
 The toolkit organizes ordinary Microsoft Graph operations into resource-bound clients, so an application can concentrate on the workflow rather than repeatedly assembling request paths, parsing metadata, or coordinating file transfers.
 
@@ -79,7 +75,7 @@ The toolkit does not provision tenants, create permission grants, provide a job 
 
 <a id="architecture"></a>
 
-## 🏗️ Architecture and package layout
+## Architecture and package layout
 
 The `m365` namespace loads `graph` lazily. The three resource clients share transport concepts but expose domain-specific operations.
 
@@ -101,7 +97,7 @@ application APIs. Python privacy is a convention, not access control.
 If you used the former client names, update `OneDrive` to `Drive` and `Mailbox`
 to `Mail` in imports and constructors. There are no old-name aliases.
 
-## 📦 Requirements and installation
+## Requirements and installation
 
 ### 📋 Dependencies
 
@@ -139,7 +135,7 @@ python -m venv $shortEnv
 ### 2️⃣ Install
 
 For the latest published version, see [PyPI](https://pypi.org/project/m365/).
-This README documents `2.9.4`; the published package may be older than this checkout.
+This README documents `2.9.5`; the published package may be older than this checkout.
 To install the version in this checkout, run from the repository root:
 
 ```bash
@@ -149,7 +145,7 @@ python -m pip install .
 Or install the wheel for this version after building it:
 
 ```bash
-python -m pip install ./dist/m365-2.9.4-py3-none-any.whl
+python -m pip install ./dist/m365-2.9.5-py3-none-any.whl
 ```
 
 ### 3️⃣ Verify the installed versions
@@ -158,8 +154,8 @@ python -m pip install ./dist/m365-2.9.4-py3-none-any.whl
 import m365
 from m365 import graph
 
-print(m365.__version__)  # 2.9.4
-print(graph.__version__) # 2.9.4
+print(m365.__version__)  # 2.9.5
+print(graph.__version__) # 2.9.5
 ```
 
 The distribution and Graph module report the same version.
@@ -167,7 +163,7 @@ The distribution and Graph module report the same version.
 
 <a id="authentication"></a>
 
-## 🔐 Authentication and authorization
+## Authentication and authorization
 
 Clients accept a caller-supplied authentication provider. The structural contract in `m365.graph.auth_types.AuthProvider` defines an `access_token` property and `Silent(scopes=None)` method. Token renewal and credential handling belong to the provider, not the resource operation.
 
@@ -181,11 +177,9 @@ Built-in factories on `Site`, `Drive`, and `Mail` include `from_default_env`, `f
 > [!WARNING]
 > Never commit secrets, tokens, signed assertions, token caches, or preauthenticated transfer URLs to source control. Do not use the toolkit to access resources outside your organization's authorization. Keep each tenant's provider configuration separate and request only the access needed for the intended task.
 
-For provider-specific configuration consult [azauthlib](https://github.com/doydl-technologies/azauthlib) and your organization's approved identity setup. See the [Windows certificate example](STORAGE.md#windows-certificate-authentication) for an unattended storage job. A valid token alone does not establish permission to a site, drive, mailbox, or individual item.
+For provider-specific configuration consult [azauthlib](https://github.com/doydl-technologies/azauthlib) and your organization's approved identity setup. See the [Windows certificate example](https://github.com/doydl-technologies/m365/blob/main/STORAGE.md#windows-certificate-authentication) for an unattended storage job. A valid token alone does not establish permission to a site, drive, mailbox, or individual item.
 
-<a id="quick-start"></a>
-
-## 🚀 Quick start
+## Quick start
 
 Start with read-only metadata and use a resource you are authorized to access.
 For example, if you saved a profile with `azauthlib`, use its profile name and
@@ -204,7 +198,7 @@ with Site.from_profile(
 
 This does not create a profile, grant permission, or write a file. A delegated
 profile needs an existing sign-in unless you explicitly opt into interactive
-authentication. See [Storage API](STORAGE.md) for profile and `Drive` examples.
+authentication. See [Storage API](https://github.com/doydl-technologies/m365/blob/main/STORAGE.md) for profile and `Drive` examples.
 
 The following examples take an already configured provider from your application.
 The resource URLs and names are illustrative.
@@ -241,11 +235,11 @@ The second example assumes approved delegated access. `me` is a signed-in user r
 
 <a id="sharepoint"></a>
 
-## 📁 SharePoint client reference
+## SharePoint client reference
 
 <a id="site-selection"></a>
 
-### 🏢 Site and library selection
+### Site and library selection
 
 `Site` resolves the target site and selected document library during construction. Use explicit resource IDs when your deployment already stores them.
 
@@ -270,7 +264,7 @@ When no drive is specified, the site's default drive is selected. A named drive 
 
 <a id="sharepoint-search"></a>
 
-### 🔎 Paths and searching
+### Paths and searching
 
 Use unencoded, library-relative paths with forward slashes, for example `Reports/2026/Forecast.xlsx`. A component named `Documents` is treated as a real subfolder, not automatically removed. Absolute document URLs are normalized only within the selected library. Parent folders must exist for uploads.
 
@@ -285,7 +279,7 @@ Default name lookup uses bounded enumeration, compares names case-insensitively,
 
 `search_root` limits legacy name traversal, not explicit paths, which remain
 library-relative. For the modern anchor-relative methods and search error codes,
-see [the storage reference](STORAGE.md#search-behavior).
+see [the storage reference](https://github.com/doydl-technologies/m365/blob/main/STORAGE.md#search-behavior).
 
 ```python
 matches = site.search_by.filename("Reports/Forecast.xlsx")
@@ -294,9 +288,7 @@ folders = site.search_by.foldername("Reports", include_children=False)
 
 Selected-site `Doc.aspx?sourcedoc=<GUID>` browser links can also be resolved when their GUID uniquely matches the selected library's item metadata. A display filename is not proof of identity. Prefer known paths or IDs.
 
-<a id="uploads"></a>
-
-### 📤 Uploads
+### Uploads
 
 `Uploader` accepts a nonempty local file or `io.BytesIO`. Uploads use sequential sessions and validate returned completion metadata. Uploading a directory or an empty file is not supported.
 
@@ -331,9 +323,7 @@ result = site.operations.Uploader(
 
 The caller's `BytesIO` position is restored. Completion checks validate returned identity, filename, size and file metadata; they do not establish an end-to-end cryptographic content hash. When the final outcome is unknown, inspect the selected destination before deciding whether to retry.
 
-<a id="downloads"></a>
-
-### 📥 Downloads
+### Downloads
 
 Pass file or folder metadata from a successful search to a download helper. Local destinations are never overwritten.
 
@@ -354,19 +344,19 @@ Downloads stage data before publication, check the supplied size, and clean inco
 
 <a id="moves"></a>
 
-### 🔄 Moving documents
+### Moving documents
 
 `site.operations.Mover(sharepoint_filename, sharepoint_foldername, new_sharepoint_filename=None)` resolves a unique source and destination before moving a document. The result is validated against the expected item and parent metadata. This changes the remote document location; review the source and destination first. A response validation failure after the move does not imply rollback.
 
 <a id="outlook"></a>
 
-## 📬 Outlook mailbox reference
+## Outlook mailbox reference
 
 `Mail(token_engine, mailbox="me", use_immutable_ids=True)` binds a provider to a mailbox. The `mailbox` value can be `me` for delegated access or an authorized user identifier. Immutable IDs are requested by default where applicable. The client exposes `mailbox_profile`, `search_by`, `operations`, `tools`, and `api`.
 
 <a id="mail-reads"></a>
 
-### 📖 Reading messages and folders
+### Reading messages and folders
 
 | Entry point | Purpose |
 | --- | --- |
@@ -404,7 +394,7 @@ Use explicit message and folder IDs when names collide. Folder discovery support
 
 <a id="mail-operations"></a>
 
-### 📝 Drafts and message operations
+### Drafts and message operations
 
 The composition API supports preparing a draft for human review separately from sending it. For example, prepare the body in your application and pass the approved recipient, subject and body to `mailbox.operations.Drafter().create(...)`. Text and HTML are supported; recipient arguments accept a single address or a sequence. Attachment, category, reply-to, importance and custom internet-header options are available subject to Graph's own restrictions.
 
@@ -419,9 +409,7 @@ The composition API supports preparing a draft for human review separately from 
 > [!WARNING]
 > Draft creation changes remote state; sending, updating, moving and deleting mail have additional consequences. Require explicit review in applications that perform these operations. Do not interpret a timeout as proof that a mutation did not occur.
 
-<a id="attachments"></a>
-
-### 📎 Attachments
+### Attachments
 
 Attachments have their own IDs, distinct from message IDs. The download helper accepts an exact `attachment_id` or a uniquely resolvable `attachment_name`. The upload helper accepts a selected message, file source, optional name and MIME content type.
 
@@ -435,7 +423,7 @@ Download filenames are validated and existing files are rejected. Large attachme
 
 <a id="delta"></a>
 
-### 🔁 Incremental synchronization
+### Incremental synchronization
 
 The delta helpers return a **single** page with three keys: `value`, `next_link`, and `delta_link`. The application owns the synchronization checkpoint, persistence, reconciliation and resync policy. Do not rewrite opaque continuation links, drop repeated events, or treat deletion tombstones as ordinary current records. A terminal delta link should be persisted only once the applicable pages have been processed successfully.
 
@@ -443,23 +431,23 @@ HTTP 410 delta failures use `GraphError(code="delta_resync_required")`. The libr
 
 <a id="onedrive"></a>
 
-## ☁️ OneDrive integration
+## OneDrive integration
 
 Use `Drive` when you already know the authorized drive ID and, for folder-scoped
 access, the folder's item ID. It does not discover an account or call `/me/drive`
 for you. Personal OneDrive uses delegated user authentication; an app-only
-certificate is not a substitute. See [Drive binding](STORAGE.md#drive-binding).
+certificate is not a substitute. See [Drive binding](https://github.com/doydl-technologies/m365/blob/main/STORAGE.md#drive-binding).
 
 ## Shared storage API
 
 `Site` and `Drive` share file/folder search, upload, download, folder creation,
-move, and rename methods. See [Storage API](STORAGE.md) for signatures, examples,
+move, and rename methods. See [Storage API](https://github.com/doydl-technologies/m365/blob/main/STORAGE.md) for signatures, examples,
 scope boundaries, and transfer safety. The SharePoint-specific interfaces above
 remain available.
 
 <a id="transport"></a>
 
-## 🌐 Shared Graph transport
+## Shared Graph transport
 
 `site.api.graph_call(...)` is the lower-level request entry point for operations not represented by a convenience helper. `site.api.iter_collection(resource_url)` yields individual collection items across continuation pages. Prefer documented Microsoft Graph resource-relative paths rather than constructing arbitrary external URLs. The transport rejects unsupported off-endpoint requests and uses separate sessions for service-issued transfer capability URLs, without Graph bearer headers.
 
@@ -474,7 +462,7 @@ Important response contracts:
 
 <a id="reliability"></a>
 
-## 🛡️ Reliability, security, and operational limits
+## Reliability, security, and operational limits
 
 | Concern | Behavior | Application responsibility |
 | --- | --- | --- |
@@ -493,7 +481,7 @@ Outlook's default pagination safety budget is 200 logical pages; folder traversa
 
 <a id="troubleshooting"></a>
 
-## 🩺 Errors and troubleshooting
+## Errors and troubleshooting
 
 ```python
 from m365.graph import GraphError
@@ -524,7 +512,7 @@ For malformed data or invalid arguments, `ValueError` can also be raised. A fail
 
 <a id="business-scenarios"></a>
 
-## 💼 Business integration scenarios
+## Business integration scenarios
 
 | Workflow | Example application design |
 | --- | --- |
@@ -538,7 +526,7 @@ Keep business rules outside the client. For example, a finance application shoul
 
 <a id="development"></a>
 
-## 🧪 Development and validation
+## Development and validation
 
 From the source root, create an isolated Python environment and install in editable mode:
 
@@ -561,15 +549,17 @@ require Microsoft 365 credentials.
 
 <a id="release"></a>
 
-## 📋 Release and packaging notes
+## Release and packaging notes
 
-This README is the GitHub project guide. The source distribution includes
-[Storage API](STORAGE.md), the [license](LICENSE), and asset attribution notices.
-The README is not packaged on PyPI.
+This README is the project guide on GitHub and the project description on PyPI.
+The source distribution includes this README, the
+[Storage API](https://github.com/doydl-technologies/m365/blob/main/STORAGE.md),
+the [license](https://github.com/doydl-technologies/m365/blob/main/LICENSE), and
+asset attribution notices.
 
 <a id="project-links"></a>
 
-## 📚 Project links and licensing
+## Project links and licensing
 
 - 🏠 [Project repository](https://github.com/doydl-technologies/m365)
 - 🐛 [Issue tracker](https://github.com/doydl-technologies/m365/issues)

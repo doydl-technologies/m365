@@ -68,7 +68,7 @@ class NamespaceTests(unittest.TestCase):
             self.assertNotIn(name, dir(graph))
         self.assertEqual(graph.Drive.move.__module__, "m365.graph._storage")
 
-    def test_artifacts_include_shared_storage_and_public_guide_without_readme(self):
+    def test_artifacts_include_shared_storage_and_public_guide(self):
         if not os.environ.get("M365_DIST"):
             self.skipTest("Build artifacts required")
         directory = Path(os.environ["M365_DIST"])
@@ -78,13 +78,9 @@ class NamespaceTests(unittest.TestCase):
         with ZipFile(wheel) as archive:
             for module in ("_storage.py", "_storage_auth.py"):
                 self.assertIn("m365/graph/" + module, archive.namelist())
-            self.assertFalse(any(Path(n).name.lower().startswith("readme") for n in archive.namelist()))
             self.assertTrue(retired.isdisjoint(Path(n).name.lower() for n in archive.namelist()))
-            metadata, = [n for n in archive.namelist() if n.endswith(".dist-info/METADATA")]
-            self.assertFalse((message_from_bytes(archive.read(metadata)).get_payload() or "").strip())
         with tarfile.open(sdist) as archive:
             self.assertTrue(any(n.endswith("/STORAGE.md") for n in archive.getnames()))
-            self.assertFalse(any(Path(n).name.lower().startswith("readme") for n in archive.getnames()))
             self.assertTrue(retired.isdisjoint(Path(n).name.lower() for n in archive.getnames()))
 
     def test_renamed_clients_have_real_canonical_class_names(self):
@@ -258,7 +254,8 @@ class NamespaceTests(unittest.TestCase):
             metadata, = [n for n in names if n.endswith(".dist-info/METADATA")]
             info = message_from_bytes(archive.read(metadata))
         self.assertEqual(info["Name"], "m365")
-        self.assertEqual(info["Version"], "2.9.4")
+        import m365
+        self.assertEqual(info["Version"], m365.__version__)
         self.assertNotIn("outlook-com", info.get_all("Provides-Extra") or [])
         auth, = [r for r in info.get_all("Requires-Dist") if r.startswith("azauthlib")]
         self.assertNotIn(";", auth)
@@ -271,7 +268,7 @@ class NamespaceTests(unittest.TestCase):
 
     def test_root_exposes_only_graph_and_matches_release_version(self):
         import m365
-        self.assertEqual(m365.__version__, "2.9.4")
+        self.assertEqual(m365.__version__, "2.9.5")
         self.assertEqual(m365.graph.__version__, m365.__version__)
         self.assertEqual(m365.__all__, ["graph"])
         with self.assertRaises(AttributeError):
@@ -301,19 +298,28 @@ class NamespaceTests(unittest.TestCase):
         self.assertFalse(any(r.startswith(("pywin32", "python-dateutil"))
                              for r in metadata.get_all("Requires-Dist")))
 
-    def test_readmes_and_long_description_are_not_distributed(self):
+    def test_readme_is_the_distribution_markdown_description(self):
         if not os.environ.get("M365_DIST"):
             self.skipTest("Build artifacts required")
         directory = Path(os.environ["M365_DIST"])
         wheel, = directory.glob("*.whl")
         sdist, = directory.glob("*.tar.gz")
+        root = Path(__file__).resolve().parents[2]
+        readme = (root / "README.md").read_text(encoding="utf-8").splitlines()
+        self.assertTrue(readme)
+
+        def check_description(data):
+            info = message_from_bytes(data)
+            self.assertEqual(info.get("Description-Content-Type"), "text/markdown")
+            self.assertEqual(info.get_payload(decode=True).decode("utf-8").splitlines(), readme)
+
         with ZipFile(wheel) as archive:
-            self.assertFalse(any(Path(n).name.startswith("README") for n in archive.namelist()))
             path, = [n for n in archive.namelist() if n.endswith(".dist-info/METADATA")]
-            info = message_from_bytes(archive.read(path))
-            self.assertFalse(info.get_payload(decode=True))
+            check_description(archive.read(path))
         with tarfile.open(sdist, "r:gz") as archive:
-            self.assertFalse(any(Path(n).name.startswith("README") for n in archive.getnames()))
-            path, = [n for n in archive.getnames() if n.count("/") == 1 and n.endswith("/PKG-INFO")]
-            info = message_from_bytes(archive.extractfile(path).read())
-            self.assertFalse(info.get_payload(decode=True))
+            names = archive.getnames()
+            path, = [n for n in names if Path(n).name.lower().startswith("readme")]
+            self.assertEqual(path.split("/")[1:], ["README.md"])
+            self.assertEqual(archive.extractfile(path).read().decode("utf-8").splitlines(), readme)
+            path, = [n for n in names if n.count("/") == 1 and n.endswith("/PKG-INFO")]
+            check_description(archive.extractfile(path).read())
