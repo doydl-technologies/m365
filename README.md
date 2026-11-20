@@ -19,7 +19,7 @@
   <a href="https://doydl.studio"><img src="https://img.shields.io/badge/Powered%20by-DOYDL%20Technologies-blue" alt="Powered by DOYDL Technologies"></a>
 </p>
 
-The project is classified as Alpha; APIs may change. It requires Python 3.10 or later.
+`m365` requires Python 3.10 or later.
 
 > [!IMPORTANT]
 > This is an independent toolkit, not an official Microsoft product. A configured Microsoft Entra application, appropriate resource permissions, and a valid Microsoft Graph authentication provider are prerequisites. Installing the package does not grant access to Microsoft 365.
@@ -129,14 +129,19 @@ install using that environment's Python. For example, in PowerShell:
 ```powershell
 $shortEnv = Join-Path $env:LOCALAPPDATA 'm365-venv'
 python -m venv $shortEnv
-& (Join-Path $shortEnv 'Scripts\python.exe') -m pip install .
+& (Join-Path $shortEnv 'Scripts\python.exe') -m pip install m365
 ```
 
 ### 2️⃣ Install
 
-For the latest published version, see [PyPI](https://pypi.org/project/m365/).
-This README documents `2.9.5`; the published package may be older than this checkout.
-To install the version in this checkout, run from the repository root:
+This guide documents `m365` `2.9.6`. To install the latest version published on
+[PyPI](https://pypi.org/project/m365/):
+
+```bash
+python -m pip install m365
+```
+
+To install from a source checkout, run from the repository root:
 
 ```bash
 python -m pip install .
@@ -145,7 +150,7 @@ python -m pip install .
 Or install the wheel for this version after building it:
 
 ```bash
-python -m pip install ./dist/m365-2.9.5-py3-none-any.whl
+python -m pip install ./dist/m365-2.9.6-py3-none-any.whl
 ```
 
 ### 3️⃣ Verify the installed versions
@@ -154,8 +159,8 @@ python -m pip install ./dist/m365-2.9.5-py3-none-any.whl
 import m365
 from m365 import graph
 
-print(m365.__version__)  # 2.9.5
-print(graph.__version__) # 2.9.5
+print(m365.__version__)  # 2.9.6
+print(graph.__version__) # 2.9.6
 ```
 
 The distribution and Graph module report the same version.
@@ -316,10 +321,12 @@ result = site.operations.Uploader(
 | Option | Default | Behavior |
 | --- | --- | --- |
 | `new_file_name` | `None` | Optional destination name; required for `BytesIO` |
-| `chunk_verbose` | `True` | Transfer progress output |
-| `max_file_size` | `"4MB"` | Upload fragment-size setting |
+| `chunk_verbose` | `True` | Accepted for compatibility; does not control progress output |
+| `max_file_size` | `"4MB"` | Accepted for compatibility; does not control chunk size |
 | `conflict_behavior` | `fail` | Fail when remote filename conflicts |
 | Other conflict values | `replace`, `rename` | Explicitly permit remote replacement or renaming |
+
+To set the upload chunk size, use the shared `site.upload(source, folder_path, chunk_size=...)` method. The size is in bytes and must be a positive multiple of 320 KiB below 60 MiB.
 
 The caller's `BytesIO` position is restored. Completion checks validate returned identity, filename, size and file metadata; they do not establish an end-to-end cryptographic content hash. When the final outcome is unknown, inspect the selected destination before deciding whether to retry.
 
@@ -331,14 +338,13 @@ Pass file or folder metadata from a successful search to a download helper. Loca
 files = site.search_by.filename("Reports/Forecast.xlsx")
 downloader = site.operations.Downloader(
     max_workers=2,
-    preserve_dir_structure=True,
     compress=False,
 )
 # Use a private, approved destination directory.
 paths = downloader.file("./downloads", files)
 ```
 
-For an explicitly selected folder, `downloader.folder(save_dir, folder_metadata)` preserves folder structure according to the configured option. `compress=True` also creates ZIP output without deleting original downloads. Empty folder entries can be preserved; flat-name collisions fail rather than silently replacing files.
+For an explicitly selected folder, `downloader.folder(save_dir, folder_metadata)` always preserves the folder tree on disk. `compress=True` also creates a ZIP without deleting the downloaded files. With `preserve_dir_structure=True`, the ZIP keeps relative paths; with `False` (the default for `Downloader`), entries are flattened. Empty folders are included, and duplicate ZIP entry names are rejected rather than overwritten.
 
 Downloads stage data before publication, check the supplied size, and clean incomplete temporary files. A filesystem supporting hard links is required for atomic no-overwrite publication. Successful earlier files may remain if a later transfer fails; a batch is not a transaction.
 

@@ -1,4 +1,4 @@
-# Shared storage API — m365 2.9.5
+# Shared storage API — m365 2.9.6
 
 Public imports:
 

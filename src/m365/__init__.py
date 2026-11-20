@@ -45,7 +45,7 @@
 """Independent Microsoft Graph toolkit with a lazy Graph namespace."""
 from importlib import import_module
 
-__version__ = "2.9.5"
+__version__ = "2.9.6"
 __all__ = ["graph"]
 
 

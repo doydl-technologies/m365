@@ -268,7 +268,7 @@ class NamespaceTests(unittest.TestCase):
 
     def test_root_exposes_only_graph_and_matches_release_version(self):
         import m365
-        self.assertEqual(m365.__version__, "2.9.5")
+        self.assertEqual(m365.__version__, "2.9.6")
         self.assertEqual(m365.graph.__version__, m365.__version__)
         self.assertEqual(m365.__all__, ["graph"])
         with self.assertRaises(AttributeError):
