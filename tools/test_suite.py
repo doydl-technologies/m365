@@ -84,6 +84,11 @@ def main():
                    skipped=len(result.skipped), network_attempts=len(attempted))
     (args.output / "results.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(json.dumps(summary, indent=2))
+    for label, cases in (("FAIL", result.failures), ("ERROR", result.errors)):
+        for test, details in cases:
+            print(f"{label}: {test}\n{details}", file=sys.stderr)
+    for test in result.unexpectedSuccesses:
+        print(f"UNEXPECTED SUCCESS: {test}", file=sys.stderr)
     return 0 if result.wasSuccessful() and not attempted else 1
 
 
